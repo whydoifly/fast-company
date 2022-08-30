@@ -8,7 +8,7 @@ import SearchStatus from './searchStatus';
 import UsersTable from './usersTable';
 import _ from 'lodash';
 
-const Users = ({ users: allUsers, ...rest }) => {
+const UsersList = ({ users: allUsers, ...rest }) => {
     const pageSize = 5;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
@@ -121,9 +121,9 @@ const Users = ({ users: allUsers, ...rest }) => {
     return 'loading...';
 };
 
-Users.propTypes = {
+UsersList.propTypes = {
     users: PropTypes.array,
     count: PropTypes.number
 };
 
-export default Users;
+export default UsersList;
