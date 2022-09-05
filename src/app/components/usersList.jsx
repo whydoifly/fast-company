@@ -12,6 +12,7 @@ const UsersList = ({ users: allUsers, ...rest }) => {
     const pageSize = 5;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
+    const [searchQuery, setSearchQuery] = useState('');
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
 
@@ -41,14 +42,20 @@ const UsersList = ({ users: allUsers, ...rest }) => {
     }, []);
     useEffect(() => {
         setCurrentPage(1);
-    }, [selectedProf]);
+    }, [selectedProf, searchQuery]);
 
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
 
     const handleProfessionSelect = (params) => {
+        if (searchQuery !== '') setSearchQuery('');
         setSelectedProf(params);
+    };
+
+    const handleSearchQuery = ({ target }) => {
+        setSelectedProf(undefined);
+        setSearchQuery(target.value);
     };
 
     const handleSort = (item) => {
@@ -56,14 +63,20 @@ const UsersList = ({ users: allUsers, ...rest }) => {
     };
 
     if (users) {
-        const filteredUsers = selectedProf
-            ? users.filter((user) => {
-                return (
-                    JSON.stringify(user.profession) ===
-                    JSON.stringify(selectedProf)
-                );
-            })
-            : users;
+        const filteredUsers = searchQuery
+            ? users.filter((user) =>
+                user.name
+                    .toLowerCase()
+                    .indexOf(searchQuery.toLowerCase()) !== -1
+            )
+            : selectedProf
+                ? users.filter((user) => {
+                    return (
+                        JSON.stringify(user.profession) ===
+                        JSON.stringify(selectedProf)
+                    );
+                })
+                : users;
         const count = filteredUsers.length;
 
         const sortedUsers = _.orderBy(
@@ -97,6 +110,13 @@ const UsersList = ({ users: allUsers, ...rest }) => {
                 )}
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
+                    <input
+                        type="text"
+                        name="searchQuery"
+                        placeholder="Search..."
+                        onChange={handleSearchQuery}
+                        value={searchQuery}
+                    />
                     {count > 0 && (
                         <UsersTable
                             users={userCrop}
@@ -117,7 +137,7 @@ const UsersList = ({ users: allUsers, ...rest }) => {
                 </div>
             </div>
         );
-    };
+    }
     return 'loading...';
 };
 
