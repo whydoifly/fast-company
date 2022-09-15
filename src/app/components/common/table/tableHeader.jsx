@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-
 const TableHeader = ({ onSort, selectedSort, columns }) => {
     const handleSort = (item) => {
         if (selectedSort.path === item) {
@@ -13,7 +11,7 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
             onSort({ path: item, order: 'asc' });
         }
     };
-    const renderSortArrow = (selectedSort, currentPath) => {
+    const rendeSortArrow = (selectedSort, currentPath) => {
         if (selectedSort.path === currentPath) {
             if (selectedSort.order === 'asc') {
                 return <i className="bi bi-caret-down-fill"></i>;
@@ -28,24 +26,19 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
         <thead>
             <tr>
                 {Object.keys(columns).map((column) => (
-                    <>
-                        <th
-                            key={column.name}
-                            onClick={
-                                columns[column].path
-                                    ? () => handleSort(columns[column].path)
-                                    : undefined
-                            }
-                            {...{ role: columns[column].path && 'button' }}
-                            scope="col"
-                        >
-                            {columns[column].name}{' '}
-                            {renderSortArrow(
-                                selectedSort,
-                                columns[column].path
-                            )}
-                        </th>
-                    </>
+                    <th
+                        key={column}
+                        onClick={
+                            columns[column].path
+                                ? () => handleSort(columns[column].path)
+                                : undefined
+                        }
+                        {...{ role: columns[column].path && 'button' }}
+                        scope="col"
+                    >
+                        {columns[column].name}{' '}
+                        {rendeSortArrow(selectedSort, columns[column].path)}
+                    </th>
                 ))}
             </tr>
         </thead>

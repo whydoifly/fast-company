@@ -1,6 +1,6 @@
 import React from 'react';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import PropTypes from 'prop-types';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const BookMark = ({ status, ...rest }) => {
     return (
@@ -9,7 +9,6 @@ const BookMark = ({ status, ...rest }) => {
         </button>
     );
 };
-
 BookMark.propTypes = {
     status: PropTypes.bool
 };
